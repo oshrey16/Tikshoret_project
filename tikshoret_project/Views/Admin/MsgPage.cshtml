@@ -1,0 +1,107 @@
+﻿@model tikshoret_project.ModelView.AccountViewModel
+@using tikshoret_project.Models;
+@{
+    Layout = null;
+}
+
+<html lang="en" crosspilot="">
+<head>
+    <title>Cinima-About</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="~/css/style.css" rel="stylesheet" type="text/css" />
+    <meta charset="utf-8">
+    <link rel="icon" type="image/x-icon" href="/img/favicon.ico">
+    <script type="text/javascript">
+        window.setTimeout(function () {
+            var navcon = '@Session["Controller"]';
+            var nav = '@Session["Navigation"]';
+            window.location.href = "/" + navcon + "/" + nav;
+        },5000);
+    </script>
+</head>
+
+<body id="page2">
+    <div class="tail-top">
+        <div class="tail-bottom">
+            <div id="main">
+                <div id="header">
+                    <div class="row-0">
+                        <ul class="nav navbar-nav">
+                            <li>
+                                @if (Session["UserName"] != null)
+                                {
+                                    @Html.DisplayName("User: " + Session["UserName"].ToString())
+                                }
+                                else
+                                {
+                                    @Html.ActionLink("Register", "Register", "Home", new { @style = "color:#00BFFF" })
+                                }
+                            </li>
+                            <li>
+                                @if (Session["UserName"] != null)
+                                {
+                                    @Html.ActionLink("Log Out", "LogOut", "Home", new { @style = "color:#00BFFF" })
+                                }
+                                else
+                                {
+
+                                    @Html.ActionLink("Login", "AccountLogin", "Home", new { @style = "color:#00BFFF" })
+                                }
+                                @if (Session["Administrator"] != null)
+                                {
+                                    <span style="color:green;"> Administrator</span>
+                                }
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="row-1">
+                        <div class="fleft"><a href="#">Scinema</a></div>
+                    </div>
+                    <div class="row-2">
+                        <ul>
+                            <li><a href="@Url.Action("Index","Home")">Home</a></li>
+                            <li><a href="@Url.Action("About","Home")">About</a></li>
+                            <li><a href="@Url.Action("Movies","Home")">Movies</a></li>
+                            <li><a href="@Url.Action("AccountLogin","Home")">My Account</a></li>
+                            @if (Session["Administrator"] != null)
+                            {
+                                <li class="last"><a href="@Url.Action("AdminLogin","Admin")">Admin Page</a></li>
+                            }
+                            else
+                            {
+                                <li class="last"><a href="@Url.Action("OrderMovieindex")">Order Movie</a></li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+                <div id="content">
+                    <div class="line-hor"></div>
+                    <div class="box">
+                        <div class="border-right">
+                            <div class="border-left">
+                                <div class="inner">
+                                    <h3>@Session["Msg"]</h3>
+                                    <div class="bar-spinner">
+                                        <div id="loading-bar-spinner" class="spinner"><div class="spinner-icon"></div></div>
+                                        <div class="down-bar-spinner">
+                                            <a>Your page will begin in a moment. If it doesn't,</a>
+                                            <a href="/Home/">click here</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="footer">
+                    <div class="left">
+                        <div class="right">
+                            <div class="footerlink">
+                                <p class="lf">Copyright &copy; 2020 <a href="#">S.C.E Cinima</a> - All Rights Reserved</p>
+                                <p class="rf">Design&Develop by Students: <br />Oshrey Avraham<br />Michal Binder</p>
+                                <div style="clear:both;"></div>
+                            </div>
+                        </div>
+                    </div>
+</body>
+</html>

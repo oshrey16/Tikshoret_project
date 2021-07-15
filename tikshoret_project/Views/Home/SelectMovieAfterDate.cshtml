@@ -1,0 +1,120 @@
+﻿@model tikshoret_project.ModelView.MoviesViewList
+@using tikshoret_project.Models;
+@{
+    Layout = null;
+}
+
+<html lang="en" crosspilot="">
+<head>
+    <title>Order</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="~/css/style.css" rel="stylesheet" type="text/css" />
+    <meta charset="utf-8">
+    <link rel="icon" type="image/x-icon" href="/img/favicon.ico">
+    <!-- jQuery UI CSS Reference -->
+    <link href="@Url.Content("~/Content/themes/base/minified/jquery-ui.min.css")" rel="stylesheet" />
+    <!-- Required jQuery and jQuery UI Javascript references -->
+    <script src="@Url.Content("~/Scripts/jquery-3.4.1.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery-ui-1.12.1.min.js")"></script>
+    <!-- Code to wire up your DatePicker -->
+    <script type="text/javascript">
+        $(function () {
+            // This will make every element with the class "date-picker" into a DatePicker element
+            $('.date-picker').datepicker({ dateFormat: 'dd-mm-yy' });
+        })
+    </script>
+</head>
+
+<body id="register_page">
+    <div class="tail-top">
+        <div class="tail-bottom">
+            <div id="main">
+                <div id="header">
+                    <div class="row-0">
+                        <ul class="nav navbar-nav">
+                            <li>
+                                @if (Session["UserName"] != null)
+                                {
+                                    @Html.DisplayName("User: " + Session["UserName"].ToString())
+                                }
+                                else
+                                {
+                                    @Html.ActionLink("Register", "Register", "Home", new { @style = "color:#00BFFF" })
+                                }
+                            </li>
+                            <li>
+                                @if (Session["UserName"] != null)
+                                {
+                                    @Html.ActionLink("Log Out", "LogOut", "Home", new { @style = "color:#00BFFF" })
+                                }
+                                else
+                                {
+
+                                    @Html.ActionLink("Login", "AccountLogin", "Home", new { @style = "color:#00BFFF" })
+                                }
+                                @if (Session["Administrator"] != null)
+                                {
+                                    <span style="color:green;"> Administrator</span>
+                                }
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="row-1">
+                        <div class="fleft"><a href="#">Scinema</a></div>
+                    </div>
+                    <div class="row-2">
+                        <ul>
+                            <li><a href="@Url.Action("Index")">Home</a></li>
+                            <li><a href="@Url.Action("About")">About</a></li>
+                            <li><a href="@Url.Action("Movies")">Movies</a></li>
+                            <li><a href="@Url.Action("AccountLogin")">My Account</a></li>
+                            @if (Session["Administrator"] != null)
+                            {
+                                <li class="last"><a href="@Url.Action("AdminLogin","Admin")">Admin Page</a></li>
+                            }
+                            else
+                            {
+                                <li class="last"><a href="@Url.Action("OrderMovieindex")">Order Movie</a></li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+                <div id="content">
+                    <div>
+                        <div class="line-hor"></div>
+                        <div class="box">
+                            <div class="border-right">
+                                <div class="border-left">
+                                    <div class="inner">
+                                    </div>
+                                </div>
+                                <br /><h3>Order Ticket</h3><br />
+                                @using (Html.BeginForm("SelectMovieAfterDate", "Home", FormMethod.Post))
+                                {
+                                    <i class="tx mytext2">Selected Date: @Session["SelectedDate"] </i>
+                                    <br /><br />
+                                    <i class="tx mytext2">Movie name:  </i>
+                                    @Html.DropDownListFor(x => x.movie.Movie_Id, new SelectList(Model.Items, "Value", "Text"))
+                                    @Html.ValidationMessageFor(x => x.movie.Movie_Id)
+                                    <input id="Submit" type="submit" value="Go!" style="height: 40px; width: 100px;"/>
+                                }
+                                <div id="footer">
+                                    <div class="left">
+                                        <div class="right">
+                                            <div class="footerlink">
+                                                <p class="lf">Copyright &copy; 2020 <a href="#">S.C.E Cinima</a> - All Rights Reserved</p>
+                                                <p class="rf">Design&Develop by Students: <br />Oshrey Avraham<br />Michal Binder</p>
+                                                <div style="clear:both;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

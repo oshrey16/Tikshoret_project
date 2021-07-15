@@ -1,0 +1,136 @@
+﻿@model tikshoret_project.ModelView.MoviesViewList
+@using tikshoret_project.Models;
+@{
+    Layout = null;
+}
+
+<html lang="en" crosspilot="">
+<head>
+    <title>Cinima-Add Movie Show</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="~/css/style.css" rel="stylesheet" type="text/css" />
+    <meta charset="utf-8">
+    <link rel="icon" type="image/x-icon" href="/img/favicon.ico">
+    <!-- jQuery UI CSS Reference -->
+    <link href="@Url.Content("~/Content/themes/base/minified/jquery-ui.min.css")" rel="stylesheet" />
+    <!-- Required jQuery and jQuery UI Javascript references -->
+    <script src="@Url.Content("~/Scripts/jquery-3.4.1.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery-ui-1.12.1.min.js")"></script>
+    <!-- Code to wire up your DatePicker -->
+    <script type="text/javascript">
+        $(function () {
+            // This will make every element with the class "date-picker" into a DatePicker element
+            $('.date-picker').datepicker({ dateFormat: 'dd-mm-yy' });
+        })
+    </script>
+    <style>
+        .ui-datepicker {
+            background: #000000;
+            border: 1px solid #555;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="tail-top">
+        <div class="tail-bottom">
+            <div id="main">
+                <div id="header">
+                    <div class="row-0">
+                        <ul class="nav navbar-nav">
+                            <li>
+                                @if (Session["UserName"] != null)
+                                {
+                                    @Html.DisplayName("User: " + Session["UserName"].ToString())
+                                }
+                                else
+                                {
+                                    @Html.ActionLink("Register", "Register", "Home")
+                                }
+                            </li>
+                            <li>
+                                @if (Session["UserName"] != null)
+                                {
+                                    @Html.ActionLink("Log Out", "LogOut", "Home")
+                                }
+                                else
+                                {
+
+                                    @Html.ActionLink("Login", "AccountLogin", "Home")
+                                }
+                                @if (Session["Administrator"] != null)
+                                {
+                                    <span style="color:green;"> Administrator</span>
+                                }
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="row-1">
+                        <div class="fleft"><a href="#">Scinema</a></div>
+                    </div>
+                    <div class="row-2">
+                        <ul>
+                            <li><a href="@Url.Action("Index","Home")">Home</a></li>
+                            <li><a href="@Url.Action("About","Home")">About</a></li>
+                            <li><a href="@Url.Action("Movies","Home")">Movies</a></li>
+                            <li><a href="@Url.Action("AccountLogin","Home")">My Account</a></li>
+                            @if (Session["Administrator"] != null)
+                            {
+                                <li class="last"><a href="@Url.Action("AdminLogin","Admin")">Admin Page</a></li>
+                            }
+                            else
+                            {
+                                <li class="last"><a href="@Url.Action("AdminLogin","Admin")">Hurush</a></li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+                <div id="content">
+                    <div class="line-hor"></div>
+                    <div class="box">
+                        <div class="border-right">
+                            <div class="border-left">
+                                <div class="inner">
+                                    <h3>Add Movie Show</h3>
+                                    @using (Html.BeginForm("AddMovieShow", "Admin", FormMethod.Post))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        <i class="tx mytext1">Name:  </i>
+                                        @Html.DropDownListFor(x => x.movie.Movie_Id, new SelectList(Model.Items, "Value", "Text"))
+                                        @Html.ValidationMessageFor(x => x.movie.Movie_Id)
+                                        <br /><br />
+                                        <i class="tx mytext2">Date Show:  </i>
+                                        @Html.TextBox("DateShow", "", new { @class = "date-picker", autocomplete = "off" })
+                                        <br /><br />
+                                        <i class="tx mytext3">Hall:  </i>
+                                        @Html.DropDownListFor(x => x.movie.Hall_Id, new SelectList(Model.ItemsHall, "Value", "Text"))
+                                        @Html.ValidationMessageFor(x => x.movie.Hall_Id)
+                                        <br /><br />
+                                        <i class="tx mytext3">Time:  </i>
+                                        @Html.DropDownList("TimeList", new SelectList(Model.ItemsTime, "Value", "Text"))
+                                        <br /><br />
+                                        <i class="tx mytext3">Ticket Price:  </i>
+                                        @Html.TextBoxFor(m => m.movie.price) @Html.ValidationMessageFor(x => x.movie.price, String.Empty, new { @style = "color:red;!important" })
+                                        <input id="Submit" type="submit" value="Add Show!" />
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="footer">
+                    <div class="left">
+                        <div class="right">
+                            <div class="footerlink">
+                                <p class="lf">Copyright &copy; 2020 <a href="#">S.C.E Cinima</a> - All Rights Reserved</p>
+                                <p class="rf">Design&Develop by Students: <br />Oshrey Avraham<br />Michal Binder</p>
+                                <div style="clear:both;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,146 @@
+﻿@model tikshoret_project.ModelView.MoviesViewList
+@using tikshoret_project.Models
+@{
+    Layout = null;
+}
+
+<html lang="en" crosspilot="">
+<head>
+    <title>Scinema</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="~/css/style.css" rel="stylesheet" type="text/css" />
+    <link href="~/css/moviestyle.css" rel="stylesheet" />
+    <meta charset="utf-8">
+    <link href="~/css/jquery.countdown.css" rel="stylesheet" />
+    <style type="text/css">
+        #defaultCountdown {
+            width: 240px;
+            height: 45px;
+        }
+    </style>
+    <link rel="icon" type="image/x-icon" href="/img/favicon.ico">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/countdown/jquery.plugin.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/countdown/.countdown.js"></script>
+
+    <script>
+        $(function () {
+            var austDay = new Date();
+            austDay = new Date(austDay.getFullYear() + 1, 1 - 1, 26);
+            $('#defaultCountdown').countdown({ until: austDay });
+            $('#year').text(austDay.getFullYear());
+        });
+    </script>
+</head>
+
+<body id="page1">
+    <div class="tail-top">
+        <div class="tail-bottom">
+            <div id="main">
+                <div id="header">
+                    <div class="row-0">
+                        <ul class="nav navbar-nav">
+                            <li>
+                                @if (Session["UserName"] != null)
+                                {
+                                    @Html.DisplayName("User: " + Session["UserName"].ToString())
+                                }
+                                else
+                                {
+                                    @Html.ActionLink("Register", "Register", "Home", new { @style = "color:#00BFFF" })
+                                }
+                            </li>
+                            <li>
+                                @if (Session["UserName"] != null)
+                                {
+                                    @Html.ActionLink("Log Out", "LogOut", "Home", new { @style = "color:#00BFFF" })
+                                }
+                                else
+                                {
+
+                                    @Html.ActionLink("Login", "AccountLogin", "Home", new { @style = "color:#00BFFF" })
+                                }
+                                @if (Session["Administrator"] != null)
+                                {
+                                    <span style="color:green;"> Administrator</span>
+                                }
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="row-1">
+                        <div class="fleft"><a href="#">Scinema</a></div>
+                    </div>
+                    <div class="row-2">
+                        <ul>
+                            <li><a href="@Url.Action("Index")">Home</a></li>
+                            <li><a href="@Url.Action("About")">About</a></li>
+                            <li><a href="@Url.Action("Movies")">Movies</a></li>
+                            <li><a href="@Url.Action("AccountLogin")">My Account</a></li>
+                            @if (Session["Administrator"] != null)
+                            {
+                                <li class="last"><a href="@Url.Action("AdminLogin","Admin")">Admin Page</a></li>
+                            }
+                            else
+                            {
+                                <li class="last"><a href="@Url.Action("OrderMovieindex")">Order Movie</a></li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+                <div id="content">
+                    <div id="slogan">
+                        <div class="image png"></div>
+                        <div class="inside">
+                            <h2>Scinema<span>Whats new</span></h2>
+                            <p>
+                                Scinema is the biggest cinema in the SCE city. It shows so many great movies with the best actors.
+                                Come to enjoy the special atmosphere and the great popcorn we offer.
+                                *This is a cinema project for networking project at SCE, done by Oshrey Avraham and Michal Binder
+                            </p>
+                        </div>
+                    </div>
+                    <div class="box">
+                        <div class="border-right">
+                            <div class="border-left">
+                                <div class="inner">
+                                    <h3>Movies In <span>Scinema</span></h3>
+                                        <div class="block">
+                                            <div class="animation">
+                                                @foreach (MoviesLibBAL obj in Model.movies)
+                                                {
+                                                    <td>
+                                                        @{
+                                                            var base64 = Convert.ToBase64String(obj.Picture);
+                                                            var imgsrc = string.Format("data:image/jpg;base64,{0}", base64);
+                                                        }
+                                                        <div>
+                                                            <img src="@imgsrc" style="max-width:200px;max-height:200px" />
+                                                        </div>
+                                                    </td>
+                                                }
+                                            </div>
+                                            </div>
+                                            <!-- partial -->
+                                            <script src='https://code.jquery.com/jquery-2.2.4.min.js'></script>
+                                            <script src="~/Scripts/myScripts/moviescroll.js"></script>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="footer">
+                    <div class="left">
+                        <div class="right">
+                            <div class="footerlink">
+                                <p class="lf">Copyright &copy; 2020 <a href="#">Scinema</a> - All Rights Reserved</p>
+                                <p class="rf">Design&Develop by Students: <br />Oshrey Avraham<br />Michal Binder</p>
+                                <div style="clear:both;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

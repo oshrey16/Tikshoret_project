@@ -1,0 +1,224 @@
+﻿@model tikshoret_project.ModelView.TicketsViewModel
+@using tikshoret_project.Models;
+@{
+    Layout = null;
+}
+
+<html lang="en" crosspilot="">
+<head>
+    <title>Cinima-Order Tickets</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="~/css/style.css" rel="stylesheet" type="text/css" />
+    <link href="~/css/seat.css" rel="stylesheet" type="text/css" />
+    <meta charset="utf-8">
+    <script src="~/Scripts/jquery-3.4.1.js"></script>
+    <!--<script src="~/Scripts/myScripts/seatjs.js"></script>-->
+    <link rel="icon" type="image/x-icon" href="/img/favicon.ico">
+    <script type="text/javascript">
+    </script>
+    <script>
+        window.addEventListener('load',
+            function () {
+                createseating();
+            }, false);
+        //Note:In js the outer loop runs first then the inner loop runs completely so it goes o.l. then i.l. i.l .i.l .i.l. i.l etc and repeat
+
+        let rseats = new Array(@Html.Raw(Json.Encode(Model.rseats)));
+        let cseats = new Array(@Html.Raw(Json.Encode(Model.cseats)));
+        var stoping;
+        let countseats = @Html.Raw(Json.Encode(Session["Selected_Hall_countseats"]));
+        let active = @Html.Raw(Json.Encode(Model.selected_active));
+        let rseatsselected = new Array(@Html.Raw(Json.Encode(Model.rseats_selected)));
+        let cseatsselected = new Array(@Html.Raw(Json.Encode(Model.cseats_selected)));
+        countseats = countseats / 10;
+        function createseating() {
+            var seatingValue = [];
+            for (var i = 0; i < countseats; i++) {
+                for (var j = 0; j < 10; j++) {
+                    stoping = 0;
+                    for (var k = 0; k < rseatsselected[0].length; k++) {
+                        if (rseatsselected[0][k] == i && cseatsselected[0][k] == j) {
+                            var seatingStyle = "<div class='seat available " + i + "," + j + " selected'></div>";
+                            seatingValue.push(seatingStyle);
+                            stoping = 1;
+                        }
+                    }
+                    if (stoping == 0) {
+                        for (var k = 0; k < rseats[0].length; k++) {
+                            if (rseats[0][k] == i && cseats[0][k] == j) {
+                                var seatingStyle = "<div class='seat available " + i + "," + j + " selectedf'></div>";
+                                seatingValue.push(seatingStyle);
+                                stoping = 1;
+                            }
+                        }
+                    }
+                    if (stoping == 0) {
+                        var seatingStyle = "<div class='seat available " + i + "," + j + "'></div>";
+                        seatingValue.push(seatingStyle);
+                    }
+                    if (j === 9) {
+
+                        var seatingStyle = "<div class='clearfix'></div>";
+                        seatingValue.push(seatingStyle);
+                    }
+                }
+            }
+
+            $('#messagePanel').html(seatingValue);
+
+            $(function () {
+                $('.seat').on('click', function () {
+                    var $t = $(this);
+                    if ($(this).hasClass("selected")) {
+                        $(this).removeClass("selected");
+                        //FROM HERE
+                        var index = $(this).attr("class").match(/\d+/g);
+                        var row = index[0];
+                        var col = index[1];
+                        var f = {};
+                        f.url = '/Home/TestDelete';
+                        f.type = "POST";
+                        f.dataType = "json";
+                        f.data = JSON.stringify({ Row: row, Col: col });
+                        f.contentType = "application/json";
+                        f.success = function (response) {
+                        };
+                        f.error = function (response) {
+                            alert(response.status);
+                        };
+                        $.ajax(f);
+                        //TOHERE
+                    } else {
+                        $(this).addClass("selected");
+                        //Add Here
+                        var index = $(this).attr("class").match(/\d+/g);
+                        var row = index[0];
+                        var col = index[1];
+                        var f = {};
+                        f.url = '/Home/Test';
+                        f.type = "POST";
+                        f.dataType = "json";
+                        f.data = JSON.stringify({ Row: row, Col: col });
+                        f.contentType = "application/json";
+                        f.success = function (response) {
+
+                            if (response.code === 1) {
+                                alert("we're sorry! Someone took this chair just now. please select another chair");
+                                $t.removeClass("selected");
+                            }
+                        };
+                        f.error = function (response) {
+                            alert(response.status);
+                        };
+                        $.ajax(f);
+                    }
+
+                });
+
+                $('.seat').mouseenter(function () {
+                    $(this).addClass("hovering");
+
+                    $('.seat').mouseleave(function () {
+                        $(this).removeClass("hovering");
+
+                    });
+                });
+            });
+
+        };
+    </script>
+</head>
+
+<body id="page_seat">
+    <div class="tail-top">
+        <div class="tail-bottom">
+            <div id="main">
+                <div id="header">
+                    <div class="row-0">
+                        <ul class="nav navbar-nav">
+                            <li>
+                                @if (Session["UserName"] != null)
+                                {
+                                    @Html.DisplayName("User: " + Session["UserName"].ToString())
+                                }
+                                else
+                                {
+                                    @Html.ActionLink("Register", "Register", "Home", new { @style = "color:#00BFFF" })
+                                }
+                            </li>
+                            <li>
+                                @if (Session["UserName"] != null)
+                                {
+                                    @Html.ActionLink("Log Out", "LogOut", "Home", new { @style = "color:#00BFFF" })
+                                }
+                                else
+                                {
+
+                                    @Html.ActionLink("Login", "AccountLogin", "Home", new { @style = "color:#00BFFF" })
+                                }
+                                @if (Session["Administrator"] != null)
+                                {
+                                    <span style="color:green;"> Administrator</span>
+                                }
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="row-1">
+                        <div class="fleft"><a href="#">Scinema</a></div>
+                    </div>
+                    <div class="row-2">
+                        <ul>
+                            <li><a href="@Url.Action("Index")">Home</a></li>
+                            <li><a href="@Url.Action("About")">About</a></li>
+                            <li><a href="@Url.Action("Movies")">Movies</a></li>
+                            <li><a href="@Url.Action("AccountLogin")">My Account</a></li>
+                            @if (Session["Administrator"] != null)
+                            {
+                                <li class="last"><a href="@Url.Action("AdminLogin","Admin")">Admin Page</a></li>
+                            }
+                            else
+                            {
+                                <li class="last"><a href="@Url.Action("OrderMovieindex")">Order Movie</a></li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+                <div id="content">
+                    <div class="line-hor"></div>
+                    <div class="box">
+                        <br />
+                        <h1>Price per ticket: @Session["price_movie"]</h1>
+                        <br />
+                        <div id="messagePanel" class="messagePanel"></div>
+                        @using (Html.BeginForm("Payment", "Home"))
+                        {
+                            if (Session["age"] != null)
+                            {
+                                <input type="checkbox" id="tick" onchange="document.getElementById('btnClick').disabled = !this.checked;" />
+                                <label>agree age validation: the age: @Session["age"]</label>
+                                <input type="submit" value="BuyTickets" disabled='disabled' id="btnClick" style="height: 80px; width: 120px; font-size:18px;" />
+                            }
+                            else
+                            {
+                                <input type="submit" value="BuyTickets" id="btnClick" style="height: 80px; width: 120px; font-size:18px;" />
+                            }
+                        }
+
+                    </div>
+                </div>
+                <div id="footer">
+                    <div class="left">
+                        <div class="right">
+                            <div class="footerlink">
+                                <p class="lf">Copyright &copy; 2020 <a href="#">S.C.E Cinima</a> - All Rights Reserved</p>
+                                <p class="rf">Design&Develop by Students: <br />Oshrey Avraham<br />Michal Binder</p>
+                                <div style="clear:both;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

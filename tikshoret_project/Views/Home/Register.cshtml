@@ -1,0 +1,127 @@
+﻿@model tikshoret_project.ModelView.AccountViewModel
+@using tikshoret_project.Models;
+@{
+    Layout = null;
+}
+
+<html lang="en" crosspilot="">
+<head>
+    <title>Cinima</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="~/css/style.css" rel="stylesheet" type="text/css" />
+    <meta charset="utf-8">
+    <link rel="icon" type="image/x-icon" href="/img/favicon.ico">
+</head>
+
+<body id="register_page">
+    <div class="tail-top">
+        <div class="tail-bottom">
+            <div id="main">
+                <div id="header">
+                    <div class="row-0">
+                        <ul class="nav navbar-nav">
+                            <li>
+                                @if (Session["UserName"] != null)
+                                {
+                                    @Html.DisplayName("User: " + Session["UserName"].ToString())
+                                }
+                                else
+                                {
+                                    @Html.ActionLink("Register", "Register", "Home", new { @style = "color:#00BFFF" })
+                                }
+                            </li>
+                            <li>
+                                @if (Session["UserName"] != null)
+                                {
+                                    @Html.ActionLink("Log Out", "LogOut", "Home", new { @style = "color:#00BFFF" })
+                                }
+                                else
+                                {
+
+                                    @Html.ActionLink("Login", "AccountLogin", "Home", new { @style = "color:#00BFFF" })
+                                }
+                                @if (Session["Administrator"] != null)
+                                {
+                                    <span style="color:green;"> Administrator</span>
+                                }
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="row-1">
+                        <div class="fleft"><a href="#">Scinema</a></div>
+                    </div>
+                    <div class="row-2">
+                        <ul>
+                            <li><a href="@Url.Action("Index")">Home</a></li>
+                            <li><a href="@Url.Action("About")">About</a></li>
+                            <li><a href="@Url.Action("Movies")">Movies</a></li>
+                            <li><a href="@Url.Action("AccountLogin")">My Account</a></li>
+                            @if (Session["Administrator"] != null)
+                            {
+                                <li class="last"><a href="@Url.Action("AdminLogin","Admin")">Admin Page</a></li>
+                            }
+                            else
+                            {
+                                <li class="last"><a href="@Url.Action("OrderMovieindex")">Order Movie</a></li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+                <div id="content">
+                    <div>
+                        <div class="line-hor"></div>
+                        <div class="box">
+                            <div class="border-right">
+                                <div class="border-left">
+                                    <div class="inner">
+                                    </div>
+                                </div>
+                                <h3>Register</h3>
+
+                                @using (Html.BeginForm("Register", "Home", FormMethod.Post))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <i class="tx mytext1">ID:  </i>
+                                    @Html.TextBoxFor(m => m.account.Id) @Html.ValidationMessageFor(x => x.account.Id, String.Empty, new { @style = "color:red;!important" })
+                                    <br />
+                                    <i class="tx mytext2">Name:  </i>
+                                    @Html.TextBoxFor(m => m.account.Cname) @Html.ValidationMessageFor(x => x.account.Cname, String.Empty, new { @style = "color:red;!important" })
+                                    <br />
+                                    <i class="tx mytext3">Address:  </i>
+                                    @Html.TextBoxFor(m => m.account.Caddress) @Html.ValidationMessageFor(x => x.account.Caddress, String.Empty, new { @style = "color:red;!important" })
+                                    <br />
+                                    <i class="tx mytext3">BirthDay:  </i>
+                                    @Html.TextBoxFor(m => m.account.bdate) @Html.ValidationMessageFor(x => x.account.bdate, String.Empty, new { @style = "color:red;!important" })
+                                    <br />
+                                    <i class="tx mytext3">Phone:  </i>
+                                    @Html.TextBoxFor(m => m.account.Phone) @Html.ValidationMessageFor(x => x.account.Phone, String.Empty, new { @style = "color:red;!important" })
+                                    <br />
+                                    <i class="tx mytext3">Email:  </i>
+                                    @Html.TextBoxFor(m => m.account.Email) @Html.ValidationMessageFor(x => x.account.Email, String.Empty, new { @style = "color:red;!important" })
+                                    <br />
+                                    <i class="tx mytext3">Password:  </i>
+                                    @Html.PasswordFor(m => m.account.Pass, new { @class = "form-control", placeholder = "Password" }) @Html.ValidationMessageFor(x => x.account.Pass, String.Empty, new { @style = "color:red;!important" })
+                                    <br />
+                                    <br />
+                                    <input id="Submit1" type="submit" value="Add Customer" />
+                                }
+                                <div id="footer">
+                                    <div class="left">
+                                        <div class="right">
+                                            <div class="footerlink">
+                                                <p class="lf">Copyright &copy; 2020 <a href="#">S.C.E Cinima</a> - All Rights Reserved</p>
+                                                <p class="rf">Design&Develop by Students: <br />Oshrey Avraham<br />Michal Binder</p>
+                                                <div style="clear:both;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
